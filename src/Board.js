@@ -176,26 +176,30 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+
       var pieces = 0;
-      var self = this;
       var colNum = null;
       var rowNum = null;
       var maxLength = this.get("n");
+
+
       (function(index) {
-        if(index >= 0) {
-          rowNum = 0;
-          colNum = index;
+        if(index < maxLength) {
+          rowNum = 0; /// this is good
+          colNum = index;  // this is good
         } else {
-          rowNum = Math.abs(index);
-          colNum = 0;
+          rowNum = index - (maxLength-1);
+          colNum = maxLength - 1;
         }
       })(minorDiagonalColumnIndexAtFirstRow);
       
-      while(colNum < maxLength && rowNum >= 0) {
+
+
+      while(colNum >= 0 && rowNum < maxLength) {
         pieces += this.get(rowNum)[colNum];
 
-        rowNum--;
-        colNum++;
+        rowNum++;
+        colNum--;
       }
 
 
