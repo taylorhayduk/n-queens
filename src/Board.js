@@ -81,9 +81,11 @@
     hasRowConflictAt: function(rowIndex) {
       var row = this.get(rowIndex);
       var pieces = 0;
-      row.forEach(function(item) {
-        pieces += item;
-      });
+      var n = this.get("n");
+      
+      for(var i = 0; i < n; i++) {
+        pieces += row[i];
+      }
       return !(pieces <= 1);
     },
 
@@ -91,9 +93,10 @@
     hasAnyRowConflicts: function() {
       var result = false;
       var self = this;
-      this.rows().forEach(function(row, index) {
-        result = result || self.hasRowConflictAt(index);
-      });
+      var n = this.get("n");
+      for(var i = 0; i < n; i++) {
+        result = result || this.hasRowConflictAt(i);
+      }
       return result; 
     },
 
@@ -105,20 +108,24 @@
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
       var pieces = 0;
-      var self = this;
-      this.rows().forEach(function(row, index) {
-        pieces += row[colIndex];
-      });
+      var n = this.get("n");
+      for(var i = 0; i < n;i++) {
+        pieces += this.get(i)[colIndex];
+        if(pieces >= 2) {
+          return true;
+        }
+      }
       return !(pieces <= 1); // fixme
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       var result = false;
-      var self = this;
-      this.rows().forEach(function(row, index) {
-        result = result || self.hasColConflictAt(index);
-      });
+      //var self = this; 
+      var n = this.get('n');  
+      for(var i = 0; i < n; i++) {
+        result = result || this.hasColConflictAt(i);
+      }
       return result; 
     },
 
@@ -186,7 +193,7 @@
       (function(index) {
         if(index < maxLength) {
           rowNum = 0; /// this is good
-          colNum = index;  // this is good
+          colNum = index; 
         } else {
           rowNum = index - (maxLength-1);
           colNum = maxLength - 1;
@@ -201,9 +208,6 @@
         rowNum++;
         colNum--;
       }
-
-
-
       return !(pieces <= 1); // fixme
     },
 
